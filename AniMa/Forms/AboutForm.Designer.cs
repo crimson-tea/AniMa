@@ -38,6 +38,7 @@ namespace AniMa.Forms
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.VersionLabel = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // label1
@@ -115,11 +116,23 @@ namespace AniMa.Forms
             this.VersionLabel.TabIndex = 8;
             this.VersionLabel.Text = "0.0.0.0";
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(130, 54);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(216, 15);
+            this.linkLabel1.TabIndex = 9;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "https://github.com/crimson-tea/AniMa";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LibraryLinkLabel_LinkClicked);
+            // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(561, 375);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.VersionLabel);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -148,5 +161,6 @@ namespace AniMa.Forms
         private Label label3;
         private Label label4;
         private Label VersionLabel;
+        private LinkLabel linkLabel1;
     }
 }

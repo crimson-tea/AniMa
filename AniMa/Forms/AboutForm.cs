@@ -18,11 +18,15 @@ namespace AniMa.Forms
 
             EscapeKeyDown.Subscribe(_ => Close());
             SelectedIndexChanged.Subscribe(SetLicense);
-            LinkLabelClicked.Subscribe(x => Process.Start(edgePath, x));
 
             LibraryListBox.SelectedIndex = 0;
 
             VersionLabel.Text = GetVersion();
+
+            void InitializeLicense()
+            {
+                LibraryListBox.Items.AddRange(_libraries);
+            }
 
             static string GetVersion()
             {
@@ -48,12 +52,6 @@ namespace AniMa.Forms
                  .Select(_ => LibraryListBox.SelectedItem as string)
                  .Do(x => LibraryLinkLabel.Text = GetUrl(x))
                  .Do(x => LicenseRichTextBox.Text = GetLicenseText(x));
-
-        private IObservable<string> LinkLabelClicked => Observable.FromEventPattern<LinkLabelLinkClickedEventHandler, LinkLabelLinkClickedEventArgs>(h => h.Invoke, h => LibraryLinkLabel.LinkClicked += h, h => LibraryLinkLabel.LinkClicked -= h)
-                .Select(x => x.Sender as LinkLabel)
-                .Select(x => x.Text)
-                .Where(x => string.IsNullOrWhiteSpace(x) is false)
-                .Where(x => File.Exists(edgePath));
 
         private static readonly string[] _libraries = new string[]
         {
@@ -86,7 +84,7 @@ namespace AniMa.Forms
             SOFTWARE.
             """;
 
-        private readonly string _reactiveExtensionsLicense =
+        private static readonly string _reactiveExtensionsLicense =
             """
                         The MIT License (MIT)
 
@@ -120,27 +118,24 @@ namespace AniMa.Forms
             _ => string.Empty,
         };
 
-        private void InitializeLicense()
-        {
-            LibraryListBox.Items.AddRange(_libraries);
-        }
-
-        string GetLicenseText(string library) => library switch
+        private static string GetLicenseText(string library) => library switch
         {
             "MemoryPack" => _memoryPackLicense,
             "Reactive Extensions" => _reactiveExtensionsLicense,
             _ => string.Empty,
         };
 
-        readonly string edgePath = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";
+        private readonly string _edgePath = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";
+
         private void LibraryLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            var link = LibraryLinkLabel.Text;
-            LibraryLinkLabel.LinkVisited = true;
+            var linkLabel = sender as LinkLabel;
+            var link = linkLabel.Text;
+            linkLabel.LinkVisited = true;
 
-            if (Path.Exists(edgePath))
+            if (Path.Exists(_edgePath))
             {
-                Process.Start(edgePath, link);
+                Process.Start(_edgePath, link);
             }
         }
     }
