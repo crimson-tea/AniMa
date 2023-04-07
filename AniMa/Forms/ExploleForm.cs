@@ -1,6 +1,7 @@
 #nullable enable
 using AniMa.JsonObjects;
 using AniMa.Models;
+using JsonObjects;
 using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
@@ -104,23 +105,37 @@ namespace AniMa.Forms
 
             var json = await DecodeToJsonAsync(content);
 
-            var programObject = TryJsonToObject<ProgramObject>(json);
+            if (TryJsonToObject<ProgramObject>(json) is ProgramObject programObject)
+            {
+                if (programObject.programs?.FirstOrDefault()?.series is null) return;
 
-            if (programObject is null) return;
-            if (programObject.programs?.FirstOrDefault()?.series is null) return;
+                var (title, seriesCount) = GetInfo(programObject);
 
-            var (title, seriesCount) = GetInfo(programObject);
+                if (title == "" || _uniqueTitles.Contains(title)) return;
 
-            if (title == "" || _uniqueTitles.Contains(title)) return;
+                _uniqueTitles.Add(title);
+                var item = new ListViewItem(new string[] { title, seriesCount.ToString() }) { Tag = programObject };
+                AnimeListView.Items.Add(item);
+                AnimeListView.Items[^1].EnsureVisible();
+            }
+            else if (TryJsonToObject<IncludeSlot>(json) is IncludeSlot includeSlot)
+            {
+                if (includeSlot.seasons.FirstOrDefault() is null) return;
 
-            _uniqueTitles.Add(title);
-            var item = new ListViewItem(new string[] { title, seriesCount.ToString() }) { Tag = programObject };
-            AnimeListView.Items.Add(item);
-            AnimeListView.Items[^1].EnsureVisible();
+                var (title, seriesCount) = GetInfo(includeSlot);
+
+                if (title == "" || _uniqueTitles.Contains(title)) return;
+
+                _uniqueTitles.Add(title);
+                var item = new ListViewItem(new string[] { title, seriesCount.ToString() }) { Tag = includeSlot };
+                AnimeListView.Items.Add(item);
+                AnimeListView.Items[^1].EnsureVisible();
+            }
 
             static (string title, int seriesCount) GetInfo(object obj) => obj switch
             {
                 ProgramObject p => (p.programs.First().series.title, p.programs.Length),
+                IncludeSlot s => (s.title, s.seasons.Last().sequence),
                 _ => ("", 0)
             };
         }
@@ -152,6 +167,8 @@ namespace AniMa.Forms
                 var success = des switch
                 {
                     ProgramObject x => x?.programs is not null,
+                    // EpisodeGroups x => x?.episodeGroupContents is not null && x.episodeGroupContents.Length > 0,
+                    IncludeSlot x => x?.seasons is not null,
                     _ => false
                 };
                 return success ? des : null;
@@ -199,6 +216,7 @@ namespace AniMa.Forms
                 Anime? anime = item.Tag switch
                 {
                     ProgramObject info => ToAnime(info),
+                    IncludeSlot info => ToAnime(info),
                     _ => null,
                 };
 
@@ -210,6 +228,28 @@ namespace AniMa.Forms
 
             AnimeListView.Items.Clear();
             _addAnimeAction(animes);
+        }
+
+        /// <summary>
+        /// IncludeSlot からAnimeを作成します。
+        /// </summary>
+        /// <param name="info"></param>
+        private Anime ToAnime(IncludeSlot info)
+        {
+            var newSeason = info.seasons.Last();
+            var title = GetTitle(info.title, newSeason.name);
+            var id = newSeason.id;
+            var url = $"https://abema.tv/video/episode/{id}_p";
+            return new Anime(title, url, 1 /* わからない */ , 6 /* わからない */, TimeSpan.Zero, DateTime.Now.Year);
+
+            static string GetTitle(string title, string seasonName)
+            {
+                if (seasonName.StartsWith("シーズン") || seasonName.StartsWith("本編"))
+                {
+                    return title;
+                }
+                return seasonName;
+            }
         }
 
         /// <summary>
