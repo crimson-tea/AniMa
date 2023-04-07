@@ -92,7 +92,7 @@ namespace AniMa.Forms
         private readonly ConcurrentDictionary<string, IncludeSlot> _includes = new();
         private readonly ConcurrentDictionary<string, EpisodeGroups> _episodes = new();
 
-        async void CoreWebView2_WebResourceResponseReceived(object? sender, CoreWebView2WebResourceResponseReceivedEventArgs e)
+        private async void CoreWebView2_WebResourceResponseReceived(object? sender, CoreWebView2WebResourceResponseReceivedEventArgs e)
         {
             var (request, response) = (e.Request, e.Response);
 
@@ -190,12 +190,12 @@ namespace AniMa.Forms
             AnimeListView.Items[^1].EnsureVisible();
         }
 
-        static string GetId(IncludeSlot includeSlot)
+        private static string GetId(IncludeSlot includeSlot)
         {
             return includeSlot.seasons.Last().id;
         }
 
-        static string GetId(EpisodeGroups groups)
+        private static string GetId(EpisodeGroups groups)
         {
             var episodeId = groups.episodeGroupContents.First().id;
             int lastP = episodeId.LastIndexOf('p');
