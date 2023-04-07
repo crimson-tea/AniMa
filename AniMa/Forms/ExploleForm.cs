@@ -4,6 +4,7 @@ using AniMa.Models;
 using JsonObjects;
 using Microsoft.Web.WebView2.Core;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -88,8 +89,10 @@ namespace AniMa.Forms
         }
 
         private readonly HashSet<string> _uniqueTitles = new();
+        private readonly ConcurrentDictionary<string, IncludeSlot> _includes = new();
+        private readonly ConcurrentDictionary<string, EpisodeGroups> _episodes = new();
 
-        async void CoreWebView2_WebResourceResponseReceived(object? sender, CoreWebView2WebResourceResponseReceivedEventArgs e)
+        private async void CoreWebView2_WebResourceResponseReceived(object? sender, CoreWebView2WebResourceResponseReceivedEventArgs e)
         {
             var (request, response) = (e.Request, e.Response);
 
@@ -105,39 +108,99 @@ namespace AniMa.Forms
 
             var json = await DecodeToJsonAsync(content);
 
-            if (TryJsonToObject<ProgramObject>(json) is ProgramObject programObject)
+            string id = AddInfoToListOrDictionary(json);
+            if (string.IsNullOrWhiteSpace(id))
             {
-                if (programObject.programs?.FirstOrDefault()?.series is null) return;
-
-                var (title, seriesCount) = GetInfo(programObject);
-
-                if (title == "" || _uniqueTitles.Contains(title)) return;
-
-                _uniqueTitles.Add(title);
-                var item = new ListViewItem(new string[] { title, seriesCount.ToString() }) { Tag = programObject };
-                AnimeListView.Items.Add(item);
-                AnimeListView.Items[^1].EnsureVisible();
-            }
-            else if (TryJsonToObject<IncludeSlot>(json) is IncludeSlot includeSlot)
-            {
-                if (includeSlot.seasons.FirstOrDefault() is null) return;
-
-                var (title, seriesCount) = GetInfo(includeSlot);
-
-                if (title == "" || _uniqueTitles.Contains(title)) return;
-
-                _uniqueTitles.Add(title);
-                var item = new ListViewItem(new string[] { title, seriesCount.ToString() }) { Tag = includeSlot };
-                AnimeListView.Items.Add(item);
-                AnimeListView.Items[^1].EnsureVisible();
+                return;
             }
 
-            static (string title, int seriesCount) GetInfo(object obj) => obj switch
+            if (_includes.TryGetValue(id, out IncludeSlot include) is false || _episodes.TryGetValue(id, out EpisodeGroups episode) is false)
+            {
+                return;
+            }
+
+            AddInfoToListIfNeeded(include, episode);
+
+            string AddInfoToListOrDictionary(string json)
+            {
+                if (TryJsonToObject<ProgramObject>(json) is ProgramObject programObject)
+                {
+                    if (programObject.programs?.FirstOrDefault()?.series is null) return string.Empty;
+
+                    var (title, seriesCount) = GetInfo(programObject);
+
+                    if (string.IsNullOrWhiteSpace(title) || _uniqueTitles.Contains(title)) return string.Empty;
+                    var anime = ToAnime(programObject);
+                    if (anime is null) return string.Empty;
+
+                    _uniqueTitles.Add(title);
+                    var item = new ListViewItem(new string[] { title, seriesCount.ToString() }) { Tag = anime };
+                    AnimeListView.Items.Add(item);
+                    AnimeListView.Items[^1].EnsureVisible();
+                }
+                else if (TryJsonToObject<IncludeSlot>(json) is IncludeSlot includeSlot)
+                {
+                    if (includeSlot.seasons.FirstOrDefault() is null) return string.Empty;
+
+                    var (title, _) = GetInfo(includeSlot);
+
+                    if (string.IsNullOrWhiteSpace(title)) return string.Empty;
+
+                    var id = GetId(includeSlot);
+                    _ = _includes.TryAdd(id, includeSlot);
+
+                    return id;
+                }
+                else if (TryJsonToObject<EpisodeGroups>(json) is EpisodeGroups groups)
+                {
+                    if (groups?.episodeGroupContents?.FirstOrDefault() is null) return string.Empty;
+
+                    var (_, count) = GetInfo(groups);
+
+                    if (count == 0) return string.Empty;
+
+                    string id = GetId(groups);
+                    _ = _episodes.TryAdd(id, groups);
+
+                    return id;
+                }
+
+                return string.Empty;
+            }
+
+            static (string? title, int seriesCount) GetInfo(object obj) => obj switch
             {
                 ProgramObject p => (p.programs.First().series.title, p.programs.Length),
-                IncludeSlot s => (s.title, s.seasons.Last().sequence),
+                IncludeSlot s => (s.seasons.LastOrDefault()?.name, s.seasons.Last().sequence),
+                EpisodeGroups g => (string.Empty, g.episodeGroupContents.Length),
                 _ => ("", 0)
             };
+        }
+
+        private void AddInfoToListIfNeeded(IncludeSlot include, EpisodeGroups episode)
+        {
+            var anime = ToAnime(include, episode);
+            if (anime is null) return;
+            if (_uniqueTitles.Contains(anime.Title)) return;
+            _uniqueTitles.Contains(anime.Title);
+
+            _uniqueTitles.Add(anime.Title);
+            var item = new ListViewItem(new string[] { anime.Title, anime.CurrentStory.ToString() }) { Tag = anime };
+            AnimeListView.Items.Add(item);
+            AnimeListView.Items[^1].EnsureVisible();
+        }
+
+        private static string GetId(IncludeSlot includeSlot)
+        {
+            return includeSlot.seasons.Last().id;
+        }
+
+        private static string GetId(EpisodeGroups groups)
+        {
+            var episodeId = groups.episodeGroupContents.First().id;
+            int lastP = episodeId.LastIndexOf('p');
+
+            return episodeId[..(lastP - 1)];
         }
 
         private static async Task<Stream?> GetContent(CoreWebView2WebResourceResponseView response)
@@ -167,7 +230,7 @@ namespace AniMa.Forms
                 var success = des switch
                 {
                     ProgramObject x => x?.programs is not null,
-                    // EpisodeGroups x => x?.episodeGroupContents is not null && x.episodeGroupContents.Length > 0,
+                    EpisodeGroups x => x?.episodeGroupContents is not null && x.episodeGroupContents.Length > 0,
                     IncludeSlot x => x?.seasons is not null,
                     _ => false
                 };
@@ -213,12 +276,7 @@ namespace AniMa.Forms
 
             foreach (ListViewItem item in AnimeListView.Items)
             {
-                Anime? anime = item.Tag switch
-                {
-                    ProgramObject info => ToAnime(info),
-                    IncludeSlot info => ToAnime(info),
-                    _ => null,
-                };
+                Anime? anime = item.Tag as Anime;
 
                 if (anime is not null)
                 {
@@ -231,16 +289,19 @@ namespace AniMa.Forms
         }
 
         /// <summary>
-        /// IncludeSlot Ç©ÇÁAnimeÇçÏê¨ÇµÇ‹Ç∑ÅB
+        /// IncludeSlot Ç∆ EpisodeGroups Ç©ÇÁ Anime ÇçÏê¨ÇµÇ‹Ç∑ÅB
         /// </summary>
         /// <param name="info"></param>
-        private Anime ToAnime(IncludeSlot info)
+        private static Anime ToAnime(IncludeSlot info, EpisodeGroups episode)
         {
             var newSeason = info.seasons.Last();
             var title = GetTitle(info.title, newSeason.name);
             var id = newSeason.id;
             var url = $"https://abema.tv/video/episode/{id}_p";
-            return new Anime(title, url, 1 /* ÇÌÇ©ÇÁÇ»Ç¢ */ , 6 /* ÇÌÇ©ÇÁÇ»Ç¢ */, TimeSpan.Zero, DateTime.Now.Year);
+
+            var storiesCount = episode.episodeGroupContents.Length;
+            var leftDays = CalcLeftDays(episode.episodeGroupContents.Last().video.terms.Last().endAt);
+            return new Anime(title, url, storiesCount, leftDays % 7, TimeSpan.Zero, DateTime.Now.Year);
 
             static string GetTitle(string title, string seasonName)
             {
@@ -287,15 +348,15 @@ namespace AniMa.Forms
             }
 
             var url = $"https://abema.tv/video/episode/{idBase}";
-            var leftDays = CalcLeftDays(info.programs[currentStory - 1]);
+            var leftDays = CalcLeftDays(info.programs[currentStory - 1].freeEndAt);
             int year = Math.Max(1950, firstProgram.credit.released);
 
             return new Anime(firstProgram.series.title, url, currentStory, leftDays % 7, TimeSpan.Zero, year);
         }
 
-        private static int CalcLeftDays(JsonObjects.Program latestProgram)
+        private static int CalcLeftDays(int freeEndAt)
         {
-            var endAt = DateTimeOffset.FromUnixTimeSeconds(latestProgram.freeEndAt).LocalDateTime;
+            var endAt = DateTimeOffset.FromUnixTimeSeconds(freeEndAt).LocalDateTime;
             return Math.Max((endAt - DateTime.Now).Days, -1);
         }
 
