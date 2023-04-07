@@ -5,7 +5,6 @@
     <OutputType>WinExe</OutputType>
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <Version>1.0.0.2</Version>
     <Copyright>crimson-tea</Copyright>
   </PropertyGroup>
 	
