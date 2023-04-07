@@ -8,7 +8,7 @@
 * .NET 7.0 以上
 
 ## インストール方法
-Releases からダウンロードした AniMa_(バージョン).zip を展開してください。  
+Releases からダウンロードした AniMa　(バージョン).zip を展開してください。  
 
 .NET 7.0ランタイムがインストールされていない場合はエラーが表示されてアプリケーションの起動に失敗します。  
 その場合には、[.NET 7.0 (Linux、macOS、Windows) をダウンロードする](https://dotnet.microsoft.com/ja-jp/download/dotnet/7.0)
