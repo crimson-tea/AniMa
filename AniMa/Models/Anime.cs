@@ -50,10 +50,10 @@ public partial record Anime
 
             static TimeSpan CalcRemaining(DateTime now, DateTime latestUpdate)
             {
-                var nextUpdate = latestUpdate.Add(new TimeSpan(7, 0, 0, 0));
-                var left = nextUpdate - DateTime.Today;
-                var hour = ((now.Ticks + TimeSpan.TicksPerHour - 1) % TimeSpan.TicksPerDay) / TimeSpan.TicksPerHour;
-                return left + new TimeSpan(24 - (int)hour, 0, 0);
+                var nextUpdate = latestUpdate.Add(new TimeSpan(6, 0, 0, 0));
+                var left = nextUpdate - now;
+                var hour = (int)((now.Ticks + TimeSpan.TicksPerHour - 1) % TimeSpan.TicksPerDay / TimeSpan.TicksPerHour);
+                return left + new TimeSpan(24 - hour, 0, 0);
             }
         }
     }
