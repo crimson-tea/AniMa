@@ -301,11 +301,15 @@ namespace AniMa.Forms
 
             var storiesCount = episode.episodeGroupContents.Length;
             var leftDays = CalcLeftDays(episode.episodeGroupContents.Last().video.terms.Last().endAt);
+            var year = episode.episodeGroupContents.Last().video.releaseYear;
+
             return new Anime(title, url, storiesCount, leftDays % 7, TimeSpan.Zero, DateTime.Now.Year);
 
             static string GetTitle(string title, string seasonName)
             {
-                if (seasonName.StartsWith("シーズン") || seasonName.StartsWith("本編"))
+                var season = new string[] { "シーズン", "Season", "本編", };
+
+                if (season.Any(seasonName.StartsWith))
                 {
                     return title;
                 }
