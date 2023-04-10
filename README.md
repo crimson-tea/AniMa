@@ -15,6 +15,16 @@ Releases からダウンロードした AniMa　(バージョン).zip を展開�
 を開き、  
 `.NET デスクトップ ランタイム 7.x.x` -> `Windows x64` インストーラーをダウンロードして実行してください。
 
+## ソースコードのビルド方法
+git から clone します。
+```git clone https://github.com/crimson-tea/AniMa.git```
+
+プロジェクトファイルのあるディレクトリに移動し、ビルド・実行します。
+```
+cd AniMa/AniMa/
+dotnet run --configuration Release
+```
+
 ## 特徴紹介
 1. **起動が速い！**
     * メイン画面は通信なしで動作するので瞬く間に起動して操作可能になります。
