@@ -27,6 +27,8 @@ namespace AniMa.Forms
         }
 
         private readonly Action<List<Anime>> _addAnimeAction;
+
+#pragma warning disable CS8604 // Null 参照引数の可能性があります。
         private IObservable<(ListBox?, object?)> UrlListBoxSelectedIndexChanged => Observable.FromEventPattern<EventHandler, EventArgs>(h => h.Invoke, h => UrlListBox.SelectedIndexChanged += h, h => UrlListBox.SelectedIndexChanged += h)
                 .Sample(TimeSpan.FromSeconds(2.5))
                 .Select(x => x.Sender as ListBox)
@@ -34,6 +36,7 @@ namespace AniMa.Forms
                 .ObserveOn(SynchronizationContext.Current) // メインスレッドに処理を戻す。
                 .Select(x => (Listbox: x, x?.SelectedItem))
                 .Where(x => x.Listbox?.SelectedItem is not null);
+#pragma warning restore CS8604 // Null 参照引数の可能性があります。
 
         private ExploleForm(Action<List<Anime>> addAnimeAction)
         {
@@ -71,7 +74,7 @@ namespace AniMa.Forms
             AnimeListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
-        private void WebView_CoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
+        private void WebView_CoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
         {
             WebView.CoreWebView2.WebResourceResponseReceived += CoreWebView2_WebResourceResponseReceived;
             WebView.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
@@ -114,7 +117,7 @@ namespace AniMa.Forms
                 return;
             }
 
-            if (_includes.TryGetValue(id, out IncludeSlot include) is false || _episodes.TryGetValue(id, out EpisodeGroups episode) is false)
+            if (_includes.TryGetValue(id, out var include) is false || _episodes.TryGetValue(id, out var episode) is false)
             {
                 return;
             }
