@@ -17,7 +17,9 @@ Releases からダウンロードした AniMa　(バージョン).zip を展開�
 
 ## ソースコードのビルド方法
 git から clone します。
-```git clone https://github.com/crimson-tea/AniMa.git```
+```
+git clone https://github.com/crimson-tea/AniMa.git
+```
 
 プロジェクトファイルのあるディレクトリに移動し、ビルド・実行します。
 ```
