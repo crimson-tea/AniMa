@@ -316,6 +316,13 @@ namespace AniMa.Forms
                 {
                     return title;
                 }
+
+                var pattern = @"(‘æ\d*Šú)";
+                if (Regex.IsMatch(seasonName, pattern))
+                {
+                    return title;
+                }
+
                 return seasonName;
             }
         }
