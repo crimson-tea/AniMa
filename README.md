@@ -5,15 +5,15 @@
 
 ## システム要件
 * Windows 10 64ビット版 以上
-* .NET 7.0 以上
+* .NET 8.0 以上
 
 ## インストール方法
 Releases からダウンロードした AniMa　(バージョン).zip を展開してください。  
 
-.NET 7.0ランタイムがインストールされていない場合はエラーが表示されてアプリケーションの起動に失敗します。  
-その場合には、[.NET 7.0 (Linux、macOS、Windows) をダウンロードする](https://dotnet.microsoft.com/ja-jp/download/dotnet/7.0)
+.NET 8.0ランタイムがインストールされていない場合はエラーが表示されてアプリケーションの起動に失敗します。  
+その場合には、[.NET 8.0 (Linux、macOS、Windows) をダウンロードする](https://dotnet.microsoft.com/ja-jp/download/dotnet/8.0)
 を開き、  
-`.NET デスクトップ ランタイム 7.x.x` -> `Windows x64` インストーラーをダウンロードして実行してください。
+`.NET デスクトップ ランタイム 8.x.x` -> `Windows x64` インストーラーをダウンロードして実行してください。
 
 ## ソースコードのビルド方法
 git から clone します。
