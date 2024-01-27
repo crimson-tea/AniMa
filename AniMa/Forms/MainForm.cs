@@ -1,4 +1,5 @@
-﻿using AniMa.Models;
+﻿using AniMa.Forms.Interfaces;
+using AniMa.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,10 +11,12 @@ using System.Windows.Forms;
 
 namespace AniMa.Forms
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IFormRemoteAction
     {
-        public MainForm()
+        public MainForm(AnimeManager manager)
         {
+            _manager = manager;
+
             InitializeComponent();
             AdditionalInitializeComponent();
 
@@ -96,25 +99,6 @@ namespace AniMa.Forms
             // 選択中のアニメを1話進める。
             nextStorySource.Subscribe(NextStory);
 
-            void NextStory((int index, Operation op) e)
-            {
-                var (index, operation) = e;
-                UIState = _manager.Execute(operation);
-
-                RefreshAnimeListView();
-                SelectItemIfSameTitle(index, operation.NewAnime.Title);
-                DoneButton.Enabled = Models.AnimeManager.CanDone(operation.NewAnime);
-
-                void SelectItemIfSameTitle(int index, string prevItemTitle)
-                {
-                    if (index >= AnimeListView.Items.Count) return;
-                    // indexが有効な値であればitemを取得する。
-                    var item = AnimeListView.Items[index];
-                    // 同じアニメなら選択された状態にする。
-                    item.Selected = item.Tag is Anime anime && anime.Title == prevItemTitle;
-                }
-            }
-
             // AnimeListViewのColumnClickイベントでAnimeListViewを押された項目でソートする。
             ColumnClick.Subscribe(SortByColumn);
 
@@ -144,6 +128,25 @@ namespace AniMa.Forms
             }
         }
 
+        private void NextStory((int index, Operation op) e)
+        {
+            var (index, operation) = e;
+            UIState = _manager.Execute(operation);
+
+            RefreshAnimeListView();
+            SelectItemIfSameTitle(index, operation.NewAnime.Title);
+            DoneButton.Enabled = Models.AnimeManager.CanDone(operation.NewAnime);
+
+            void SelectItemIfSameTitle(int index, string prevItemTitle)
+            {
+                if (index >= AnimeListView.Items.Count) return;
+                // indexが有効な値であればitemを取得する。
+                var item = AnimeListView.Items[index];
+                // 同じアニメなら選択された状態にする。
+                item.Selected = item.Tag is Anime anime && anime.Title == prevItemTitle;
+            }
+        }
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             _settings = Settings.Load(Settings.SettingsPath);
@@ -151,7 +154,7 @@ namespace AniMa.Forms
             RefreshAnimeListView();
         }
 
-        private readonly AnimeManager _manager = new();
+        private readonly AnimeManager _manager;
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -297,5 +300,19 @@ namespace AniMa.Forms
             NewAnimeListForm form = new(_manager, RefreshAnimeListView);
             form.Show();
         }
+
+        private void DoneAnime(Anime anime)
+        {
+            if (AnimeManager.CanDone(anime) is false) { return; }
+
+            var index = _manager.Animes.IndexOf(anime);
+            var op = new Operation(OperationType.Next, anime, Anime.NextStory(anime));
+
+            NextStory((index, op));
+        }
+
+        void IFormRemoteAction.Refresh() => Invoke(RefreshAnimeListView);
+
+        public void Done(Anime anime) => Invoke(() => DoneAnime(anime));
     }
 }

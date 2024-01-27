@@ -13,7 +13,9 @@
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1518.46" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
   </ItemGroup>
-	
+  <ItemGroup>
+	<FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Update="Forms\AboutForm.cs">
       <SubType>Form</SubType>
