@@ -40,7 +40,7 @@ namespace AniMa.Forms
         private Anime CreateAnime(string url, string text)
         {
             var title = text.Contains('|') ? text[..text.LastIndexOf('|')].Trim() : text.Trim();
-            return new Anime(title, url, (int)LatestNumberNumericUpDown.Value, (int)LeftDaysNumericUpDown.Value, new TimeSpan(), 2023);
+            return new Anime(title, url, (int)LatestNumberNumericUpDown.Value, (int)LeftDaysNumericUpDown.Value, 2023);
         }
 
         private void Clear()

@@ -83,8 +83,8 @@ public class ListViewItemComparer : IComparer
         int Compare(SortCondition condition) => (SortType)condition.Column switch
         {
             SortType.Title => a.Title.CompareTo(b.Title),
-            SortType.Number => a.CurrentStory.CompareTo(b.CurrentStory),
-            SortType.LatestUpdate => a.LatestUpdate.CompareTo(b.LatestUpdate),
+            SortType.Number => a.NumberOfEpisodes.CompareTo(b.NumberOfEpisodes),
+            SortType.LatestUpdate => a.StartAt.CompareTo(b.StartAt),
             SortType.TimeLeft => a.RemainingTimeUntilNextUpdate.CompareTo(b.RemainingTimeUntilNextUpdate),
             SortType.Year => a.Year.CompareTo(b.Year),
             _ => throw new ArgumentException()

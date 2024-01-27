@@ -188,7 +188,7 @@ namespace AniMa.Forms
             _uniqueTitles.Contains(anime.Title);
 
             _uniqueTitles.Add(anime.Title);
-            var item = new ListViewItem(new string[] { anime.Title, anime.CurrentStory.ToString() }) { Tag = anime };
+            var item = new ListViewItem(new string[] { anime.Title, anime.NumberOfEpisodes.ToString() }) { Tag = anime };
             AnimeListView.Items.Add(item);
             AnimeListView.Items[^1].EnsureVisible();
         }
@@ -306,7 +306,7 @@ namespace AniMa.Forms
             var leftDays = CalcLeftDays(episode.episodeGroupContents.Last().video.terms.Last().endAt);
             var year = episode.episodeGroupContents.Last().video.releaseYear;
 
-            return new Anime(title, url, storiesCount, leftDays % 7, TimeSpan.Zero, DateTime.Now.Year);
+            return new Anime(title, url, storiesCount, leftDays % 7, DateTime.Now.Year);
 
             static string GetTitle(string title, string seasonName)
             {
@@ -365,7 +365,7 @@ namespace AniMa.Forms
             var leftDays = CalcLeftDays(info.programs[currentStory - 1].freeEndAt);
             int year = Math.Max(1950, firstProgram.credit.released);
 
-            return new Anime(firstProgram.series.title, url, currentStory, leftDays % 7, TimeSpan.Zero, year);
+            return new Anime(firstProgram.series.title, url, currentStory, leftDays % 7, year);
         }
 
         private static int CalcLeftDays(int freeEndAt)

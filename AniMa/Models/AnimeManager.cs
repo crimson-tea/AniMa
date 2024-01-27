@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace AniMa.Models;
 
-internal class AnimeManager : IRedoUndo<Operation>
+public class AnimeManager : IRedoUndo<Operation>
 {
-    internal record UIState(bool CanUndo, bool CanRedo);
+    public record UIState(bool CanUndo, bool CanRedo);
 
-    static readonly string saveFileMemory = @".\save.mempack";
+    private static readonly string s_saveFilePath = @".\save.mempack";
 
     public RedoUndo<Operation> _redoUndo;
 
@@ -39,7 +39,7 @@ internal class AnimeManager : IRedoUndo<Operation>
 
     public AnimeManager()
     {
-        _animes = Load(saveFileMemory);
+        _animes = Load(s_saveFilePath);
         _redoUndo = new RedoUndo<Operation>(this);
     }
 
@@ -66,7 +66,7 @@ internal class AnimeManager : IRedoUndo<Operation>
     /// </summary>
     public void Save()
     {
-        SaveOngoing(saveFileMemory);
+        SaveOngoing(s_saveFilePath);
     }
 
     ///  <summary>
@@ -99,6 +99,47 @@ internal class AnimeManager : IRedoUndo<Operation>
     /// <param name="anime"></param>
     /// <returns></returns>
     public static bool CanDone(Anime anime) => anime.RemainingTimeUntilNextUpdate < new TimeSpan(7, 0, 0, 0);
+
+    public void UpdateDateTime(Anime anime)
+    {
+        var oldAnime = _animes.FirstOrDefault(x => x.WatchId == anime.WatchId && x.NumberOfEpisodes == anime.NumberOfEpisodes);
+        if (oldAnime is null) { return; }
+
+        var newAnime = oldAnime with { StartAt = anime.StartAt };
+        Replace(oldAnime, newAnime);
+    }
+
+    internal bool Exist(string watchIdSegment, int numberOfEpisodes)
+    {
+        var watchId = watchIdSegment[..watchIdSegment.LastIndexOf("_p")];
+        return _animes.Any(x => x.WatchId == watchId && x.NumberOfEpisodes == numberOfEpisodes);
+    }
+
+    internal bool Exist(Anime anime)
+    {
+        return _animes.Any(x => x.WatchId == anime.WatchId && x.NumberOfEpisodes == anime.NumberOfEpisodes);
+    }
+
+    internal bool ExistByWatchId(Anime anime)
+    {
+        return _animes.Any(x => x.WatchId == anime.WatchId);
+    }
+
+    internal bool ExistMoreThanNumberOfEpisodes(Anime anime)
+    {
+        return _animes.Any(x => x.WatchId == anime.WatchId && x.NumberOfEpisodes >= anime.NumberOfEpisodes);
+    }
+
+    internal bool IsSameDateTime(Anime anime)
+    {
+        var registered = _animes.FirstOrDefault(x => x.WatchId == anime.WatchId && x.NumberOfEpisodes == anime.NumberOfEpisodes);
+        if (registered is null) { return false; }
+
+        return registered.StartAt == anime.StartAt;
+    }
+
+    internal Anime GetAnime(string watchId, int numberOfEpisodes)
+        => _animes.FirstOrDefault(x => x.WatchId == watchId && x.NumberOfEpisodes == numberOfEpisodes);
 
     void IRedoUndo<Operation>.ExecuteRedo(Operation operation) => (operation.OperationType switch
     {

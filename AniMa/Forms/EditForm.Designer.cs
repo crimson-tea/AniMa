@@ -28,271 +28,252 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.PrevDayButton = new System.Windows.Forms.Button();
-            this.NextDayButton = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.DateTextBox = new System.Windows.Forms.TextBox();
-            this.EPNumPrevButton = new System.Windows.Forms.Button();
-            this.LatestEpisodeTextBox = new System.Windows.Forms.TextBox();
-            this.EPNumNextButton = new System.Windows.Forms.Button();
-            this.PrevWeekButton = new System.Windows.Forms.Button();
-            this.NextWeekButton = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.Set12Button = new System.Windows.Forms.Button();
-            this.Set1Button = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ReleaseYearNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.groupBox1.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ReleaseYearNumericUpDown)).BeginInit();
-            this.SuspendLayout();
+            PrevDayButton = new System.Windows.Forms.Button();
+            NextDayButton = new System.Windows.Forms.Button();
+            DateTextBox = new System.Windows.Forms.TextBox();
+            PrevWeekButton = new System.Windows.Forms.Button();
+            NextWeekButton = new System.Windows.Forms.Button();
+            groupBox1 = new System.Windows.Forms.GroupBox();
+            groupBox2 = new System.Windows.Forms.GroupBox();
+            ReleaseYearNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            groupBox5 = new System.Windows.Forms.GroupBox();
+            TitleTextBox = new System.Windows.Forms.TextBox();
+            groupBox4 = new System.Windows.Forms.GroupBox();
+            NextSeasonButton = new System.Windows.Forms.Button();
+            NextEpisodeButton = new System.Windows.Forms.Button();
+            PrevSeasonButton = new System.Windows.Forms.Button();
+            NumberOfEpisodesTextBox = new System.Windows.Forms.TextBox();
+            PrevEpisodeButton = new System.Windows.Forms.Button();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ReleaseYearNumericUpDown).BeginInit();
+            groupBox5.SuspendLayout();
+            groupBox4.SuspendLayout();
+            SuspendLayout();
             // 
             // PrevDayButton
             // 
-            this.PrevDayButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.PrevDayButton.Location = new System.Drawing.Point(64, 50);
-            this.PrevDayButton.Margin = new System.Windows.Forms.Padding(4);
-            this.PrevDayButton.Name = "PrevDayButton";
-            this.PrevDayButton.Size = new System.Drawing.Size(31, 29);
-            this.PrevDayButton.TabIndex = 2;
-            this.PrevDayButton.Text = "<";
-            this.PrevDayButton.UseVisualStyleBackColor = true;
-            this.PrevDayButton.Click += new System.EventHandler(this.PrevDayButton_Click);
+            PrevDayButton.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            PrevDayButton.Location = new System.Drawing.Point(64, 50);
+            PrevDayButton.Margin = new System.Windows.Forms.Padding(4);
+            PrevDayButton.Name = "PrevDayButton";
+            PrevDayButton.Size = new System.Drawing.Size(31, 29);
+            PrevDayButton.TabIndex = 2;
+            PrevDayButton.Text = "<";
+            PrevDayButton.UseVisualStyleBackColor = true;
+            PrevDayButton.Click += PrevDayButton_Click;
             // 
             // NextDayButton
             // 
-            this.NextDayButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.NextDayButton.Location = new System.Drawing.Point(101, 50);
-            this.NextDayButton.Margin = new System.Windows.Forms.Padding(4);
-            this.NextDayButton.Name = "NextDayButton";
-            this.NextDayButton.Size = new System.Drawing.Size(31, 29);
-            this.NextDayButton.TabIndex = 3;
-            this.NextDayButton.Text = ">";
-            this.NextDayButton.UseVisualStyleBackColor = true;
-            this.NextDayButton.Click += new System.EventHandler(this.NextDayButton_Click);
-            // 
-            // button3
-            // 
-            this.button3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button3.Location = new System.Drawing.Point(16, 432);
-            this.button3.Margin = new System.Windows.Forms.Padding(4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(88, 29);
-            this.button3.TabIndex = 0;
-            this.button3.Text = "Prev";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button4.Location = new System.Drawing.Point(111, 432);
-            this.button4.Margin = new System.Windows.Forms.Padding(4);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(88, 29);
-            this.button4.TabIndex = 0;
-            this.button4.Text = "Next";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(16, 414);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(27, 12);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Day:";
+            NextDayButton.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            NextDayButton.Location = new System.Drawing.Point(101, 50);
+            NextDayButton.Margin = new System.Windows.Forms.Padding(4);
+            NextDayButton.Name = "NextDayButton";
+            NextDayButton.Size = new System.Drawing.Size(31, 29);
+            NextDayButton.TabIndex = 3;
+            NextDayButton.Text = ">";
+            NextDayButton.UseVisualStyleBackColor = true;
+            NextDayButton.Click += NextDayButton_Click;
             // 
             // DateTextBox
             // 
-            this.DateTextBox.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.DateTextBox.Location = new System.Drawing.Point(7, 23);
-            this.DateTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.DateTextBox.Name = "DateTextBox";
-            this.DateTextBox.ReadOnly = true;
-            this.DateTextBox.Size = new System.Drawing.Size(182, 19);
-            this.DateTextBox.TabIndex = 0;
-            this.DateTextBox.TabStop = false;
-            // 
-            // EPNumPrevButton
-            // 
-            this.EPNumPrevButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.EPNumPrevButton.Location = new System.Drawing.Point(7, 50);
-            this.EPNumPrevButton.Margin = new System.Windows.Forms.Padding(4);
-            this.EPNumPrevButton.Name = "EPNumPrevButton";
-            this.EPNumPrevButton.Size = new System.Drawing.Size(88, 29);
-            this.EPNumPrevButton.TabIndex = 7;
-            this.EPNumPrevButton.Text = "戻す";
-            this.EPNumPrevButton.UseVisualStyleBackColor = true;
-            this.EPNumPrevButton.Click += new System.EventHandler(this.EPNumPrevButton_Click);
-            // 
-            // LatestEpisodeTextBox
-            // 
-            this.LatestEpisodeTextBox.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LatestEpisodeTextBox.Location = new System.Drawing.Point(63, 25);
-            this.LatestEpisodeTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.LatestEpisodeTextBox.Name = "LatestEpisodeTextBox";
-            this.LatestEpisodeTextBox.ReadOnly = true;
-            this.LatestEpisodeTextBox.Size = new System.Drawing.Size(70, 19);
-            this.LatestEpisodeTextBox.TabIndex = 2;
-            this.LatestEpisodeTextBox.TabStop = false;
-            // 
-            // EPNumNextButton
-            // 
-            this.EPNumNextButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.EPNumNextButton.Location = new System.Drawing.Point(101, 50);
-            this.EPNumNextButton.Margin = new System.Windows.Forms.Padding(4);
-            this.EPNumNextButton.Name = "EPNumNextButton";
-            this.EPNumNextButton.Size = new System.Drawing.Size(88, 29);
-            this.EPNumNextButton.TabIndex = 8;
-            this.EPNumNextButton.Text = "進める";
-            this.EPNumNextButton.UseVisualStyleBackColor = true;
-            this.EPNumNextButton.Click += new System.EventHandler(this.EPNumNextButton_Click);
+            DateTextBox.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            DateTextBox.Location = new System.Drawing.Point(7, 23);
+            DateTextBox.Margin = new System.Windows.Forms.Padding(4);
+            DateTextBox.Name = "DateTextBox";
+            DateTextBox.ReadOnly = true;
+            DateTextBox.Size = new System.Drawing.Size(182, 19);
+            DateTextBox.TabIndex = 0;
+            DateTextBox.TabStop = false;
             // 
             // PrevWeekButton
             // 
-            this.PrevWeekButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.PrevWeekButton.Location = new System.Drawing.Point(7, 50);
-            this.PrevWeekButton.Margin = new System.Windows.Forms.Padding(4);
-            this.PrevWeekButton.Name = "PrevWeekButton";
-            this.PrevWeekButton.Size = new System.Drawing.Size(49, 29);
-            this.PrevWeekButton.TabIndex = 1;
-            this.PrevWeekButton.Text = "<<";
-            this.PrevWeekButton.UseVisualStyleBackColor = true;
-            this.PrevWeekButton.Click += new System.EventHandler(this.PrevWeekButton_Click);
+            PrevWeekButton.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            PrevWeekButton.Location = new System.Drawing.Point(7, 50);
+            PrevWeekButton.Margin = new System.Windows.Forms.Padding(4);
+            PrevWeekButton.Name = "PrevWeekButton";
+            PrevWeekButton.Size = new System.Drawing.Size(49, 29);
+            PrevWeekButton.TabIndex = 1;
+            PrevWeekButton.Text = "<<";
+            PrevWeekButton.UseVisualStyleBackColor = true;
+            PrevWeekButton.Click += PrevWeekButton_Click;
             // 
             // NextWeekButton
             // 
-            this.NextWeekButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.NextWeekButton.Location = new System.Drawing.Point(140, 50);
-            this.NextWeekButton.Margin = new System.Windows.Forms.Padding(4);
-            this.NextWeekButton.Name = "NextWeekButton";
-            this.NextWeekButton.Size = new System.Drawing.Size(49, 29);
-            this.NextWeekButton.TabIndex = 4;
-            this.NextWeekButton.Text = ">>";
-            this.NextWeekButton.UseVisualStyleBackColor = true;
-            this.NextWeekButton.Click += new System.EventHandler(this.NextWeekButton_Click);
+            NextWeekButton.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            NextWeekButton.Location = new System.Drawing.Point(140, 50);
+            NextWeekButton.Margin = new System.Windows.Forms.Padding(4);
+            NextWeekButton.Name = "NextWeekButton";
+            NextWeekButton.Size = new System.Drawing.Size(49, 29);
+            NextWeekButton.TabIndex = 4;
+            NextWeekButton.Text = ">>";
+            NextWeekButton.UseVisualStyleBackColor = true;
+            NextWeekButton.Click += NextWeekButton_Click;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.DateTextBox);
-            this.groupBox1.Controls.Add(this.NextWeekButton);
-            this.groupBox1.Controls.Add(this.PrevDayButton);
-            this.groupBox1.Controls.Add(this.PrevWeekButton);
-            this.groupBox1.Controls.Add(this.NextDayButton);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(197, 88);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "1話更新日:";
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.Set12Button);
-            this.groupBox3.Controls.Add(this.Set1Button);
-            this.groupBox3.Controls.Add(this.LatestEpisodeTextBox);
-            this.groupBox3.Controls.Add(this.EPNumPrevButton);
-            this.groupBox3.Controls.Add(this.EPNumNextButton);
-            this.groupBox3.Location = new System.Drawing.Point(12, 106);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(197, 89);
-            this.groupBox3.TabIndex = 1;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "現在の話数:";
-            // 
-            // Set12Button
-            // 
-            this.Set12Button.Location = new System.Drawing.Point(140, 22);
-            this.Set12Button.Name = "Set12Button";
-            this.Set12Button.Size = new System.Drawing.Size(49, 23);
-            this.Set12Button.TabIndex = 6;
-            this.Set12Button.Text = "12";
-            this.Set12Button.UseVisualStyleBackColor = true;
-            this.Set12Button.Click += new System.EventHandler(this.Set12Button_Click);
-            // 
-            // Set1Button
-            // 
-            this.Set1Button.Location = new System.Drawing.Point(7, 22);
-            this.Set1Button.Name = "Set1Button";
-            this.Set1Button.Size = new System.Drawing.Size(49, 23);
-            this.Set1Button.TabIndex = 5;
-            this.Set1Button.Text = "1";
-            this.Set1Button.UseVisualStyleBackColor = true;
-            this.Set1Button.Click += new System.EventHandler(this.SetOneButton_Click);
+            groupBox1.Controls.Add(DateTextBox);
+            groupBox1.Controls.Add(NextWeekButton);
+            groupBox1.Controls.Add(PrevDayButton);
+            groupBox1.Controls.Add(PrevWeekButton);
+            groupBox1.Controls.Add(NextDayButton);
+            groupBox1.Location = new System.Drawing.Point(12, 71);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new System.Drawing.Size(197, 88);
+            groupBox1.TabIndex = 0;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "更新日時:";
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.ReleaseYearNumericUpDown);
-            this.groupBox2.Location = new System.Drawing.Point(12, 201);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(200, 56);
-            this.groupBox2.TabIndex = 2;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "リリース年:";
+            groupBox2.Controls.Add(ReleaseYearNumericUpDown);
+            groupBox2.Location = new System.Drawing.Point(12, 231);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new System.Drawing.Size(197, 56);
+            groupBox2.TabIndex = 2;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "リリース年:";
             // 
             // ReleaseYearNumericUpDown
             // 
-            this.ReleaseYearNumericUpDown.Location = new System.Drawing.Point(6, 22);
-            this.ReleaseYearNumericUpDown.Maximum = new decimal(new int[] {
-            2200,
-            0,
-            0,
-            0});
-            this.ReleaseYearNumericUpDown.Name = "ReleaseYearNumericUpDown";
-            this.ReleaseYearNumericUpDown.Size = new System.Drawing.Size(188, 23);
-            this.ReleaseYearNumericUpDown.TabIndex = 9;
-            this.ReleaseYearNumericUpDown.ValueChanged += new System.EventHandler(this.ReleaseYearNumericUpDown_ValueChanged);
+            ReleaseYearNumericUpDown.Location = new System.Drawing.Point(6, 22);
+            ReleaseYearNumericUpDown.Maximum = new decimal(new int[] { 2200, 0, 0, 0 });
+            ReleaseYearNumericUpDown.Name = "ReleaseYearNumericUpDown";
+            ReleaseYearNumericUpDown.Size = new System.Drawing.Size(183, 23);
+            ReleaseYearNumericUpDown.TabIndex = 9;
+            ReleaseYearNumericUpDown.ValueChanged += ReleaseYearNumericUpDown_ValueChanged;
+            // 
+            // groupBox5
+            // 
+            groupBox5.Controls.Add(TitleTextBox);
+            groupBox5.Location = new System.Drawing.Point(12, 12);
+            groupBox5.Name = "groupBox5";
+            groupBox5.Size = new System.Drawing.Size(197, 53);
+            groupBox5.TabIndex = 12;
+            groupBox5.TabStop = false;
+            groupBox5.Text = "作品名:";
+            // 
+            // TitleTextBox
+            // 
+            TitleTextBox.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            TitleTextBox.Location = new System.Drawing.Point(7, 23);
+            TitleTextBox.Margin = new System.Windows.Forms.Padding(4);
+            TitleTextBox.Name = "TitleTextBox";
+            TitleTextBox.Size = new System.Drawing.Size(182, 19);
+            TitleTextBox.TabIndex = 8;
+            TitleTextBox.TextChanged += TitleTextBox_TextChanged;
+            // 
+            // groupBox4
+            // 
+            groupBox4.Controls.Add(NextSeasonButton);
+            groupBox4.Controls.Add(NextEpisodeButton);
+            groupBox4.Controls.Add(PrevSeasonButton);
+            groupBox4.Controls.Add(NumberOfEpisodesTextBox);
+            groupBox4.Controls.Add(PrevEpisodeButton);
+            groupBox4.Location = new System.Drawing.Point(12, 165);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new System.Drawing.Size(197, 60);
+            groupBox4.TabIndex = 13;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "話数:";
+            // 
+            // NextSeasonButton
+            // 
+            NextSeasonButton.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            NextSeasonButton.Location = new System.Drawing.Point(163, 21);
+            NextSeasonButton.Name = "NextSeasonButton";
+            NextSeasonButton.Size = new System.Drawing.Size(27, 29);
+            NextSeasonButton.TabIndex = 8;
+            NextSeasonButton.Text = ">>";
+            NextSeasonButton.UseVisualStyleBackColor = true;
+            NextSeasonButton.Click += NextSeasonButton_Click;
+            // 
+            // NextEpisodeButton
+            // 
+            NextEpisodeButton.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            NextEpisodeButton.Location = new System.Drawing.Point(129, 21);
+            NextEpisodeButton.Margin = new System.Windows.Forms.Padding(4);
+            NextEpisodeButton.Name = "NextEpisodeButton";
+            NextEpisodeButton.Size = new System.Drawing.Size(27, 29);
+            NextEpisodeButton.TabIndex = 7;
+            NextEpisodeButton.Text = ">";
+            NextEpisodeButton.UseVisualStyleBackColor = true;
+            NextEpisodeButton.Click += NextEpisodeButton_Click;
+            // 
+            // PrevSeasonButton
+            // 
+            PrevSeasonButton.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            PrevSeasonButton.Location = new System.Drawing.Point(7, 21);
+            PrevSeasonButton.Name = "PrevSeasonButton";
+            PrevSeasonButton.Size = new System.Drawing.Size(27, 29);
+            PrevSeasonButton.TabIndex = 5;
+            PrevSeasonButton.Text = "<<";
+            PrevSeasonButton.UseVisualStyleBackColor = true;
+            PrevSeasonButton.Click += PrevSeasonButton_Click;
+            // 
+            // NumberOfEpisodesTextBox
+            // 
+            NumberOfEpisodesTextBox.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            NumberOfEpisodesTextBox.Location = new System.Drawing.Point(77, 26);
+            NumberOfEpisodesTextBox.Margin = new System.Windows.Forms.Padding(4);
+            NumberOfEpisodesTextBox.Name = "NumberOfEpisodesTextBox";
+            NumberOfEpisodesTextBox.ReadOnly = true;
+            NumberOfEpisodesTextBox.Size = new System.Drawing.Size(44, 19);
+            NumberOfEpisodesTextBox.TabIndex = 2;
+            // 
+            // PrevEpisodeButton
+            // 
+            PrevEpisodeButton.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            PrevEpisodeButton.Location = new System.Drawing.Point(41, 21);
+            PrevEpisodeButton.Margin = new System.Windows.Forms.Padding(4);
+            PrevEpisodeButton.Name = "PrevEpisodeButton";
+            PrevEpisodeButton.Size = new System.Drawing.Size(27, 29);
+            PrevEpisodeButton.TabIndex = 6;
+            PrevEpisodeButton.Text = "<";
+            PrevEpisodeButton.UseVisualStyleBackColor = true;
+            PrevEpisodeButton.Click += PrevEpisodeButton_Click;
             // 
             // EditForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(222, 264);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "EditForm";
-            this.Text = "EditForm";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.ReleaseYearNumericUpDown)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(222, 296);
+            Controls.Add(groupBox4);
+            Controls.Add(groupBox5);
+            Controls.Add(groupBox2);
+            Controls.Add(groupBox1);
+            KeyPreview = true;
+            Margin = new System.Windows.Forms.Padding(4);
+            Name = "EditForm";
+            Text = "EditForm";
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)ReleaseYearNumericUpDown).EndInit();
+            groupBox5.ResumeLayout(false);
+            groupBox5.PerformLayout();
+            groupBox4.ResumeLayout(false);
+            groupBox4.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion
 
         private System.Windows.Forms.Button PrevDayButton;
         private System.Windows.Forms.Button NextDayButton;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox DateTextBox;
-        private System.Windows.Forms.Button EPNumPrevButton;
-        private System.Windows.Forms.TextBox LatestEpisodeTextBox;
-        private System.Windows.Forms.Button EPNumNextButton;
         private System.Windows.Forms.Button PrevWeekButton;
         private System.Windows.Forms.Button NextWeekButton;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button Set1Button;
-        private System.Windows.Forms.Button Set12Button;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.NumericUpDown ReleaseYearNumericUpDown;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.TextBox TitleTextBox;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button NextSeasonButton;
+        private System.Windows.Forms.Button NextEpisodeButton;
+        private System.Windows.Forms.Button PrevSeasonButton;
+        private System.Windows.Forms.TextBox NumberOfEpisodesTextBox;
+        private System.Windows.Forms.Button PrevEpisodeButton;
     }
 }
