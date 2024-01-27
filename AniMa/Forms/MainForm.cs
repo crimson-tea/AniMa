@@ -81,7 +81,7 @@ namespace AniMa.Forms
                 .Select(x => x.Sender as ListView)
                 .Select(x => x.SelectedItems)
                 .Select(x => x[0].Tag as Anime)
-                .Select(x => _settings.CreateArgument(x.Url))
+                .Select(x => _settings.CreateArgument(x.URL))
                 .Select(x => (Action<string>)(path => Process.Start(path, x)));
 
             // 視聴ページをブラウザで開く。
@@ -90,7 +90,7 @@ namespace AniMa.Forms
             var nextStorySource = Observable.Merge(AnimeListViewMouseRightClick, AnimeListViewMouseRightDoubleClick, DoneButtonClick)
                     .Where(x => x.SelectedItems.Count == 1)
                     .Select(x => (Index: x.SelectedIndices[0], Anime: x.SelectedItems[0].Tag as Anime))
-                    .Where(x => Models.AnimeManager.CanDone(x.Anime))
+                    .Where(x => AnimeManager.CanDone(x.Anime))
                     .Select(x => (x.Index, new Operation(OperationType.Next, x.Anime, Anime.NextStory(x.Anime))));
 
             // 選択中のアニメを1話進める。
@@ -101,7 +101,7 @@ namespace AniMa.Forms
                 var (index, operation) = e;
                 UIState = _manager.Execute(operation);
 
-                RefreshAnimeListView(UseFilterCheckBox.Checked);
+                RefreshAnimeListView();
                 SelectItemIfSameTitle(index, operation.NewAnime.Title);
                 DoneButton.Enabled = Models.AnimeManager.CanDone(operation.NewAnime);
 
@@ -140,7 +140,7 @@ namespace AniMa.Forms
             void DeleteAnime(Operation op)
             {
                 UIState = _manager.Execute(op);
-                RefreshAnimeListView(UseFilterCheckBox.Checked);
+                RefreshAnimeListView();
             }
         }
 
@@ -148,7 +148,7 @@ namespace AniMa.Forms
         {
             _settings = Settings.Load(Settings.SettingsPath);
             UseFilterCheckBox.Checked = _settings.UseFilter;
-            RefreshAnimeListView(UseFilterCheckBox.Checked);
+            RefreshAnimeListView();
         }
 
         private readonly AnimeManager _manager = new();
@@ -160,45 +160,50 @@ namespace AniMa.Forms
             _manager.Save();
         }
 
-        private void HideCheckBox_CheckedChanged(object sender, EventArgs e) => RefreshAnimeListView(UseFilterCheckBox.Checked);
+        private void HideCheckBox_CheckedChanged(object sender, EventArgs e) => RefreshAnimeListView();
 
-        private void RefreshAnimeListView(bool useFilter)
+        private void RefreshAnimeListView()
         {
-            var animes = useFilter
-                ? _manager.Animes.Where(a => a.IsStreamingNow)
-                : _manager.Animes;
+            RefreshAnimeListView(UseFilterCheckBox.Checked);
 
-            RefreshListView(animes);
-            AdjustHeight();
-
-            UnableDelete();
-            UnableDone();
-            UnableEdit();
-
-            void RefreshListView(IEnumerable<Anime> animes)
+            void RefreshAnimeListView(bool useFilter)
             {
-                AnimeListView.Items.Clear();
-                AnimeListView.Items.AddRange(animes.Select(CreateListViewItemFromAnime).ToArray());
-                AnimeListView.Sort();
+                var animes = useFilter
+                    ? _manager.Animes.Where(a => a.IsStreamingNow)
+                    : _manager.Animes;
 
-                // Capture this.
-                ListViewItem CreateListViewItemFromAnime(Anime anime)
+                RefreshListView(animes);
+                AdjustHeight();
+
+                UnableDelete();
+                UnableDone();
+                UnableEdit();
+
+                void RefreshListView(IEnumerable<Anime> animes)
                 {
-                    var item = new ListViewItem { Tag = anime, Text = anime.Title };
-                    item.SubItems.AddRange(Enumerable.Range(1, AnimeListView.Columns.Count).Select(anime.GetSubItemString).ToArray());
-                    return item;
+                    AnimeListView.Items.Clear();
+                    AnimeListView.Items.AddRange(animes.Select(CreateListViewItemFromAnime).ToArray());
+                    AnimeListView.Sort();
+
+                    // Capture this.
+                    ListViewItem CreateListViewItemFromAnime(Anime anime)
+                    {
+                        var item = new ListViewItem { Tag = anime, Text = anime.Title };
+                        item.SubItems.AddRange(Enumerable.Range(1, AnimeListView.Columns.Count).Select(anime.GetSubItemString).ToArray());
+                        return item;
+                    }
                 }
-            }
 
-            void AdjustHeight()
-            {
-                var diff = AnimeListView.Items.Count * 16 + 28 - AnimeListView.Height;
-                Height += diff;
-            }
+                void AdjustHeight()
+                {
+                    var diff = AnimeListView.Items.Count * 16 + 28 - AnimeListView.Height;
+                    Height += diff;
+                }
 
-            void UnableDelete() => (DeleteToolStripMenuItem.Enabled, CompleteButton.Enabled) = (false, false);
-            void UnableDone() => DoneButton.Enabled = false;
-            void UnableEdit() => EditButton.Enabled = false;
+                void UnableDelete() => (DeleteToolStripMenuItem.Enabled, CompleteButton.Enabled) = (false, false);
+                void UnableDone() => DoneButton.Enabled = false;
+                void UnableEdit() => EditButton.Enabled = false;
+            }
         }
 
         private void AddAnimeLabel_Click(object sender, EventArgs e)
@@ -209,7 +214,7 @@ namespace AniMa.Forms
             void AddNewAnime(Anime anime)
             {
                 _manager.AddAnime(anime);
-                RefreshAnimeListView(UseFilterCheckBox.Checked);
+                RefreshAnimeListView();
             }
         }
 
@@ -230,7 +235,7 @@ namespace AniMa.Forms
 
             UIState = _manager.Execute(new Operation(OperationType.Edit, oldAnime, newAnime));
 
-            RefreshAnimeListView(UseFilterCheckBox.Checked);
+            RefreshAnimeListView();
         }
 
         private void ExploreButton_Click(object sender, EventArgs e)
@@ -240,7 +245,7 @@ namespace AniMa.Forms
             void AddAnimeAction(List<Anime> animes)
             {
                 animes.ForEach(_manager.AddAnime);
-                RefreshAnimeListView(UseFilterCheckBox.Checked);
+                RefreshAnimeListView();
             }
         }
 
@@ -261,7 +266,7 @@ namespace AniMa.Forms
         private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UIState = _manager.Undo();
-            RefreshAnimeListView(UseFilterCheckBox.Checked);
+            RefreshAnimeListView();
         }
 
         Models.AnimeManager.UIState UIState
@@ -272,7 +277,7 @@ namespace AniMa.Forms
         private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UIState = _manager.Redo();
-            RefreshAnimeListView(UseFilterCheckBox.Checked);
+            RefreshAnimeListView();
         }
 
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -284,7 +289,13 @@ namespace AniMa.Forms
 
             var anime = AnimeListView.SelectedItems[0].Tag as Anime;
             UIState = _manager.Execute(new(OperationType.Complete, anime, Anime.Complete(anime)));
-            RefreshAnimeListView(UseFilterCheckBox.Checked);
+            RefreshAnimeListView();
+        }
+
+        private void OpenNewAnimeListButton_Click(object sender, EventArgs e)
+        {
+            NewAnimeListForm form = new(_manager, RefreshAnimeListView);
+            form.Show();
         }
     }
 }

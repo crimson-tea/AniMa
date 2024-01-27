@@ -5,7 +5,7 @@ namespace AniMa;
 /// <summary>
 /// RedoUndoを実装します。
 /// </summary>
-internal abstract class RedoUndoBase<TOperation>
+public abstract class RedoUndoBase<TOperation>
 {
     private readonly Stack<TOperation> _undo;
     private readonly Stack<TOperation> _redo;
@@ -81,7 +81,7 @@ internal abstract class RedoUndoBase<TOperation>
     }
 }
 
-class RedoUndo<TOperation> : RedoUndoBase<TOperation>
+public class RedoUndo<TOperation> : RedoUndoBase<TOperation>
 {
     private readonly IRedoUndo<TOperation> _control;
 

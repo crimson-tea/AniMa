@@ -1,6 +1,6 @@
 ﻿namespace AniMa;
 
-internal interface IRedoUndo<TOperation>
+public interface IRedoUndo<TOperation>
 {
     internal void ExecuteRedo(TOperation operation);
     internal void ExecuteUndo(TOperation operation);
